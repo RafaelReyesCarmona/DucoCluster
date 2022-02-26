@@ -1,4 +1,4 @@
-# duino-coin-rig
+# DuinoCluster
 This will be the official software for the official Duino Coin Rig. This software is currently still in alpha status and is being further developed.
 
 ### Table of contents
@@ -21,17 +21,13 @@ This will be the official software for the official Duino Coin Rig. This softwar
 ## Hardware
 ### Currently supported hardware
 - ESP8266
-- Arduino Nano
+- Arduino Pro Mini / LGT8F328P
 
 ### Planned additional SBCs
 - ESP32
 - Arduino Micro
 - Arduino Uno
 - Arduino Mega
-
-### Plannes additional MCs
-- ATtiny85
-
 
 
 ## Component wiring
