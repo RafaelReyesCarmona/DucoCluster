@@ -1,11 +1,35 @@
 /*
- * Project: DuinoCoinRig
- * File:    ESP8266_ClientPool
- * Version: 0.1
- * Purpose: Connection and communication with the Duino Coin Pool
- * Author:  Frank Niggemann
- */
+DucoCluster v1.0
 
+Copyright © 2022 Francisco Rafael Reyes Carmona. This version.
+Frank Niggemann, DuinoCoinRig - original version.
+All rights reserved.
+
+rafael.reyes.carmona@gmail.com
+
+  This file is part of DucoCluster.
+
+  DucoCluster is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  DucoCluster is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with DucoCluster.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*
+ * Project: DucoCluster
+ * File:    ESP8266_ClientPool.hpp
+ * Version: 0.2
+ * Purpose: Connection and communication with the Duino Coin Pool
+ * Author:  Frank Niggemann, Francisco Rafael Reyes Carmona
+ */
 
 
 /***********************************************************************************************************************
@@ -117,7 +141,7 @@ void clientPoolValidateState(int id) {
  */
 void clientPoolLogStates() {
   logMessage("ClientPool", "clientPoolLogStates", "MethodName", "");
-  for (byte id=SLAVE_ID_MIN ; id<SLAVE_ID_MAX ; id++) {
+  for (byte id=0 ; id<SLAVE_ID_MAX ; id++) {
     if (slaveFound[id]) {
       logMessage("ClientPool", "clientPoolClientIsConnected", "MethodDetail", "Client ID " + String(id) + " -> In State: " + String(poolClientState[id]));
     }
@@ -132,7 +156,7 @@ void clientPoolLogStates() {
 int clientPoolClientsOnline() {
   logMessage("ClientPool", "clientPoolClientsOnline", "MethodName", "");
   int counter = 0;
-  for (byte id=SLAVE_ID_MIN ; id<SLAVE_ID_MAX ; id++) {
+  for (byte id=0 ; id<SLAVE_ID_MAX ; id++) {
     if (poolClientState[id] > CLIENT_STATE_OFFLINE) {
       counter ++;
     }

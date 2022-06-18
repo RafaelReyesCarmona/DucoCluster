@@ -3,13 +3,13 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="The official software for the official Duino Coin Rig">
+		<meta name="description" content="The software for the DuinoCluster">
 		<meta name="author" content="Frank Niggemann">
 		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 		<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 		<link rel="manifest" href="site.webmanifest">
-		<title>Duino Coin Rig V0.2</title>
+		<title>DuinoCluster's Info Panel</title>
 		<style>
 			body { margin:0; padding:0; font-family:sans-serif; font-size:1rem; font-weight:400; line-height:1.15; color:#212529; text-align:left; background-color:#ffedd6; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; -ms-overflow-style:scrollbar; -webkit-tap-highlight-color:transparent; min-width:480px;align-content:center; }
 			.header { margin:0; padding:0; text-align:center; background-color:#121212; }
@@ -111,7 +111,7 @@
 								
 							}
 						}; 
-						xhr2.open("GET", "https://server.duinocoin.com/balances/DerProgrammierer78", true);
+						xhr2.open("GET", "https://server.duinocoin.com/balances/"+username, true);
 						xhr2.send();
 					}
 				}; 

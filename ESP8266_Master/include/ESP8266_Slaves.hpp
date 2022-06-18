@@ -1,12 +1,35 @@
 /*
- * Project: DuinoCoinRig
- * File:    ESP8266_Slaves
- * Version: 0.1
+DucoCluster v1.0
+
+Copyright © 2022 Francisco Rafael Reyes Carmona. This version.
+Frank Niggemann, DuinoCoinRig - original version.
+All rights reserved.
+
+rafael.reyes.carmona@gmail.com
+
+  This file is part of DucoCluster.
+
+  DucoCluster is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  DucoCluster is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with DucoCluster.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*
+ * Project: DucoCluster
+ * File:    ESP8266_Slaves.hpp
+ * Version: 0.2
  * Purpose: Communication with the slaves
- * Author:  Frank Niggemann
+ * Author:  Frank Niggemann, Francisco Rafael Reyes Carmona
  */
-
-
 
 /***********************************************************************************************************************
  * Code Slaves
@@ -26,6 +49,8 @@ void slavesSetup() {
  */
 void slavesWireInit() {
   logMessage("Slaves", "slavesWireInit", "MethodName", "");
+  pinMode(WIRE_PIN_SDA, INPUT_PULLUP);
+  pinMode(WIRE_PIN_SCL, INPUT_PULLUP);
   Wire.begin(WIRE_PIN_SDA, WIRE_PIN_SCL);
   Wire.setClock(WIRE_CLOCK);
 }
@@ -38,7 +63,7 @@ void slavesScan() {
   setStateMaster(MASTER_STATE_SCANNING);
   logMessage("Slaves", "slavesScan", "MethodDetail", "Start scanning for slaves");
   int counter = 0;
-  for (byte id=SLAVE_ID_MIN ; id<SLAVE_ID_MAX ; id++) {
+  for (byte id=0 ; id<SLAVE_ID_MAX ; id++) {
     if (slaveExists(id)) {
       logMessage("Slaves", "slavesScan", "MethodDetail", "Slave found with ID " + String(id));
       String text = slaveRequestLn(id);
@@ -50,6 +75,27 @@ void slavesScan() {
   }
   nodes_sum = counter;
   logMessage("Slaves", "slavesScan", "MethodDetail", "Found "+String(counter)+" slave(s)");
+}
+
+/**
+ * Refresh for existing slaves
+ */
+void slavesRefresh() {
+  logMessage("Slaves", "slavesRefresh", "MethodName", "");
+  logMessage("Slaves", "slavesRefresh", "MethodDetail", "Refreshing for slaves");
+  int counter = 0;
+  for (byte id=0 ; id<SLAVE_ID_MAX ; id++) {
+    if (slaveExists(id)) {
+      logMessage("Slaves", "slavesRefresh", "MethodDetail", "Slave found with ID " + String(id));
+      String text = slaveRequestLn(id);
+      counter++;
+      slaveFound[id] = true;
+    } else {
+      slaveFound[id] = false;
+    }
+  }
+  nodes_sum = counter;
+  logMessage("Slaves", "slavesRefresh", "MethodDetail", "Found "+String(counter)+" slave(s)");
 }
 
 /**
@@ -87,7 +133,7 @@ void slaveSendMessage(byte id, String message) {
 void slavesSendMessage(String message) {
   logMessage("Slaves", "slavesSendMessage", "MethodName", "");
   logMessage("Slaves", "slavesSendMessage", "MethodDetail", "Send message to all slaves");
-  for (byte id=SLAVE_ID_MIN ; id<SLAVE_ID_MAX ; id++) {
+  for (byte id=0 ; id<SLAVE_ID_MAX ; id++) {
     if (slaveExists(id)) {
       logMessage("Slaves", "slavesSendMessage", "MethodDetail", "Send message to ID " + String(id) + " -> " + message);
       slaveSendText(id, message);

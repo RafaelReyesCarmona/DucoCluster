@@ -1,9 +1,34 @@
 /*
- * Project: DuinoCoinRig
- * File:    ArduinoNano_Iic
- * Version: 0.2
- * Purpose: Communication with the master
- * Author:  Frank Niggemann
+ArduinoNano_Iic.hpp - Communication with the master for DuinoCluster Master/Slave.
+DuinoCluster v1.0
+
+Copyright © 2022 Francisco Rafael Reyes Carmona. This version.
+Frank Niggemann, DuinoCoinRig - original version.
+All rights reserved.
+
+rafael.reyes.carmona@gmail.com
+
+  This file is part of DuinoCluster.
+
+  DuinoCluster is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  DuinoCluster is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with DuinoCluster.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+
+/*
+ * File:    ArduinoNano_Iic.hpp
+ * Version: 0.2.1
+ * Author:  Frank Niggemann, Francisco Rafael Reyes Carmona
  */
 
 
@@ -17,7 +42,7 @@ void iicSetup() {
   pinMode(PIN_IIC_SCL, INPUT_PULLUP);
   
   Wire.begin();
-  for (int id=IIC_ID_MIN; id<IIC_ID_MAX; id++) {
+  for (int id=IIC_ID_MIN; id<=IIC_ID_MAX; id++) {
     Wire.beginTransmission(id);
     int result = Wire.endTransmission();
     if (result != 0) {
@@ -28,14 +53,7 @@ void iicSetup() {
   Wire.end();
 
   logMessage("Address ID: "+String(iic_id));
-  Wire.begin(iic_id);
-  Wire.onReceive(iicHandlerReceive);
-  Wire.onRequest(iicHandlerRequest);  
-  ducoId = getDucoId();
-  logMessage("DUCO ID: "+ducoId);
-  ledBlink(PIN_LED_ADDRESS, 250, 250);
-  ledBlink(PIN_LED_ADDRESS, 250, 250);
-  setState(SLAVE_STATE_FREE);
+  iicInit();
 }
 
 
@@ -70,16 +88,50 @@ void iicWorker() {
     unsigned long startTime = micros();
     unsigned int ducos1result = 0;
     if (difficulty < 655) ducos1result = Ducos1a.work(lastblockhash, newblockhash, difficulty);
+    setState(SLAVE_STATE_READY);
     unsigned long endTime = micros();
-    unsigned long elapsedTime = endTime - startTime;
-    while (bufferRequest.available()) bufferRequest.read();
-    bufferRequest.print(String(ducos1result) + "," + String(elapsedTime) + "," + ducoId + "\n");
-
-    setState(SLAVE_STATE_FREE);
-    logMessage("Result: "+String(ducos1result) + "," + String(elapsedTime) + "," + ducoId);
-  }
+    #ifdef HASHRATE_FORCE
+    unsigned long elapsedTime;
+    elapsedTime = (unsigned long)ducos1result * 1000UL;
+    elapsedTime /= (HASHRATE_SPEED + random(-5,5));
+    #else
+    unsigned int elapsedTime = endTime - startTime;
+    #endif
+    bufferRequest.print("\n");
+    setState(SLAVE_STATE_RESULT_READY);
+    //while (bufferRequest.available()) bufferRequest.read();
+    size_t leng = bufferRequest.print(String(ducos1result) + "," + String(elapsedTime) + "," + ducoId + "\n");
+    setState(SLAVE_STATE_RESULT_SENT);
+    if (leng > 0) {
+      setState(SLAVE_STATE_FREE);
+      logMessage("Result: "+String(ducos1result) + "," + String(elapsedTime) + "," + ducoId);
+    } else {
+      setState(SLAVE_STATE_ERROR);
+      logMessage("ERROR!!!!");
+    }
+  } else setState(SLAVE_STATE_FREE);
 }
 
+void iicInit() {
+  Wire.begin(iic_id);
+  Wire.onReceive(iicHandlerReceive);
+  Wire.onRequest(iicHandlerRequest);  
+  ducoId = getDucoId();
+  logMessage("DUCO ID: "+ducoId);
+  ledBlink(PIN_LED_ADDRESS, 250, 250);
+  ledBlink(PIN_LED_ADDRESS, 250, 250);
+  setState(SLAVE_STATE_FREE);
+}
+
+void iicEnd() {
+  Wire.end();
+}
+
+void iicReset() {
+  iicEnd();
+  delay(5);
+  iicInit();
+}
 /*
 byte iic_id = 0;
 StreamString bufferReceive;

@@ -1,11 +1,11 @@
 # DuinoCluster
-This will be the official software for the official Duino Coin Rig. This software is currently still in alpha status and is being further developed.
+This is my personal work about Duino Coin. DuinoCluster is divided in two projects to implement the way I have the cluster minig.
 
+The code is based in the official Duino-Coin (https://duinocoin.com/) of ESP8266s boards
+(NodeMCU, Wemos, etc.) (https://github.com/revoxhere/duino-coin/tree/master/ESP8266_Code) and duino-coin-rig project on GitHub (https://github.com/MicrocontrollerExpert/duino-coin-rig)
 ### Table of contents
 - [Hardware](#hardware)
   * [Currently supported hardware](#currently-supported-hardware)
-  * [Planned additional SBCs](#planned-additional-sbcs)
-  * [Plannes additional MCs](#plannes-additional-mcs)
 - [Component wiring](#component-wiring)
   * [ESP8266 to Arduino Nano](#esp8266-to-arduino-nano)
   * [ESP8266 to ATTINY85](#esp8266-to-attiny85)
@@ -15,19 +15,14 @@ This will be the official software for the official Duino Coin Rig. This softwar
     + [5V SD card adapter](#5v-sd-card-adapter)
 
 ### Screenshot Webfrontend
-<img src="Images/Screenshot-Webfrontend.png" alt="Duino Coin Rig Screenshot Webfrontend" width="100%">
+<img src="Images/Screenshot-Webfrontend.jpe
+g" alt="DuinoCluster Screenshot Webfrontend" width="100%">
 
 
 ## Hardware
 ### Currently supported hardware
 - ESP8266
 - Arduino Pro Mini / LGT8F328P
-
-### Planned additional SBCs
-- ESP32
-- Arduino Micro
-- Arduino Uno
-- Arduino Mega
 
 
 ## Component wiring

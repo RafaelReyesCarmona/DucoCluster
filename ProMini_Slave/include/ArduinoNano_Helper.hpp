@@ -1,9 +1,34 @@
 /*
- * Project: DuinoCoinRig
- * File:    ArduinoNano_Helper
- * Version: 0.1
- * Purpose: Contains all helper functions
- * Author:  Frank Niggemann
+ArduinoNano_Helper.hpp - Contains all helper functions for the slave DuinoCluster Master/Slave.
+DuinoCluster v1.0
+
+Copyright © 2022 Francisco Rafael Reyes Carmona. This version.
+Frank Niggemann, DuinoCoinRig - original version.
+All rights reserved.
+
+rafael.reyes.carmona@gmail.com
+
+  This file is part of DuinoCluster.
+
+  DuinoCluster is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  DuinoCluster is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with DuinoCluster.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+
+/*
+ * File:    ArduinoNano_Helper.hpp
+ * Version: 0.1.1
+ * Author:  Frank Niggemann, Francisco Rafael Reyes Carmona
  */
 
 
@@ -20,23 +45,8 @@ String getDucoId() {
 String getPseudoUniqueIdString() {
   String result = "";
   byte value[8];
-  String hexvalue[16];
-  hexvalue[0] = '0';
-  hexvalue[1] = '1';
-  hexvalue[2] = '2';
-  hexvalue[3] = '3';
-  hexvalue[4] = '4';
-  hexvalue[5] = '5';
-  hexvalue[6] = '6';
-  hexvalue[7] = '7';
-  hexvalue[8] = '8';
-  hexvalue[9] = '9';
-  hexvalue[10] = 'A';
-  hexvalue[11] = 'B';
-  hexvalue[12] = 'C';
-  hexvalue[13] = 'D';
-  hexvalue[14] = 'E';
-  hexvalue[15] = 'F';
+  String hexvalue = "0123456789ABCDEF";  
+
   for (int i=0 ; i<8 ; i++) {
     value[i] = boot_signature_byte_get(i);
   }
@@ -56,6 +66,7 @@ String getPseudoUniqueIdString() {
 }
 
 unsigned long getStartupDelay() {
+  /*
   byte value[8];
   unsigned long milliseconds = 0;
   for (int i=0 ; i<8 ; i++) {
@@ -71,6 +82,11 @@ unsigned long getStartupDelay() {
   milliseconds = (milliseconds%1000)*10;
   logMessage("Startupdelay: "+String(milliseconds)+"ms");
   return milliseconds;
+  */
+  unsigned long time = 0;
+  time = (unsigned long) getTrueRotateRandomByte() * 1000 + (unsigned long) getTrueRotateRandomByte();
+  logMessage("Startupdelay: "+String(time)+"µs");
+  return time;
 }
 
 void ledBlink(int pin, int msOn, int msOff) {

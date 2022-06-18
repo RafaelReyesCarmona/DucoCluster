@@ -1,13 +1,38 @@
 /*
- * Project: DuinoCoinRig
- * File:    ArduinoNano_Slave
- * Version: 0.1
- * Purpose: This is the master file that starts and coordinates the slave
- * Author:  Frank Niggemann
+ArduinoNano_Slave.cpp - Master file that starts and coordinates the slave for DuinoCluster Master/Slave.
+DuinoCluster v1.0
+
+Copyright © 2022 Francisco Rafael Reyes Carmona. This version.
+Frank Niggemann, DuinoCoinRig - original version.
+All rights reserved.
+
+rafael.reyes.carmona@gmail.com
+
+  This file is part of DuinoCluster.
+
+  DuinoCluster is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  DuinoCluster is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with DuinoCluster.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+
+/*
+ * File:    ArduinoNano_Slave.cpp
+ * Version: 0.1.1
+ * Author:  Frank Niggemann, Francisco Rafael Reyes Carmona.
  * 
  * This is a modified version of this software: https://github.com/ricaun/DuinoCoinI2C/tree/main/DuinoCoin_Tiny_Slave
  * 
- * Hardware: Arduino Nano
+ * Hardware: Arduino Pro Mini / LGT8F328P-SSOP20
  * 
  * Needed files: ArduinoNano_Helper
  *               ArduinoNano_Iic
@@ -18,18 +43,35 @@
  *                   DuinoCoin
  *                   StreamString
  *                   Wire
+ *                   Watchdog
+ *                   SoftwareSerial
  */
 
-
+/* 
+ * Addittional information to the compiler.
+ * By defining SPEED value, the optimization can be changed during macro expansion phase
+ *
+ * 0 -O0    <- reduce compilation time
+ * 1 -Os    <- optimize for size
+ * 2 -O2    <- Fast
+ * 3 -O3    <- Faster
+ * 4 -Ofast <- Fastest
+ * g -Og    <- optimize debugging experience
+ */
+#define SPEED 4
 
 /***********************************************************************************************************************
  * Includes
  **********************************************************************************************************************/
 
+#include "Arduino.h"
+#include "DuinoCoinSpeed.h"
+#include "TrueRandomNumbers.hpp"
 #include "ArduinoUniqueID.h"
 #include "DuinoCoin.h"
 #include "StreamString.h"
 #include "Wire.h"
+#include <SoftwareSerial.h>
 
 
 /***********************************************************************************************************************
@@ -49,13 +91,23 @@
 #define SLAVE_STATE_RESULT_SENT 5       // The ID for status READY (The result has been sent)
 #define SLAVE_STATE_ERROR 6             // The ID for status ERROR (Slave has a problem)
 
-#define PIN_IIC_SDA 4                   // D2 - A4 - GPIO4
-#define PIN_IIC_SCL 5                   // D1 - A5 - GPIO5
+#define PIN_IIC_SDA SDA                 // D2 - A4 - GPIO4
+#define PIN_IIC_SCL SCL                 // D1 - A5 - GPIO5
 #define IIC_SPEED 100000                // The speed
 
 #define IIC_ID_MIN 1                    // The first possible address
-#define IIC_ID_MAX 50                   // The last possible address
+#define IIC_ID_MAX 5                    // The last possible address
 
+#define LOGSERIALOUTPUT true            // Define true if config log info to serial.
+
+#define LOGSERIAL Serial                // Define for hardware serial, comment for software serial.
+
+//SoftwareSerial SoftSerial(2, 3);      // Define SoftwareSerial RX, TX at pins defined.
+//#define LOGSERIAL SoftSerial          // Uncomment twice lines for Software Serial.
+
+// HASHRATE FORCE for testing only.
+//#define HASHRATE_FORCE
+//#define HASHRATE_SPEED 258
 
 
 /***********************************************************************************************************************
@@ -66,9 +118,8 @@ byte iic_id = 1;
 StreamString bufferReceive;
 StreamString bufferRequest;
 int slaveState = SLAVE_STATE_UNKNOWN;
-bool logSerial = true;
+bool logSerial = LOGSERIALOUTPUT;                   
 String ducoId = "";
-
 
 
 /***********************************************************************************************************************
@@ -87,11 +138,20 @@ void iicSetup();
 void iicHandlerReceive(int numBytes);
 void iicHandlerRequest();
 void iicWorker();
+void iicInit();
+void iicEnd();
+void iccReset();
 
 // Methods Log
 void logSetup();
 void logMessage(String message);
 void logMessageSerial(String message);
+
+// Methods TrueRandomNumbers
+byte rotate(byte b, int r);
+void pushLeftStack(byte bitToPush);
+void pushRightStackRight(byte bitToPush);
+byte getTrueRotateRandomByte();
 
 void setState(int state);
 
@@ -134,6 +194,8 @@ void setState(int state) {
   }
 }
 
+//void(* resetFunc) (void) = 0;//declare reset function at address 0
+
 
 void setup() {
   delay(100);
@@ -154,12 +216,23 @@ void setup() {
     digitalWrite(PIN_LED_READY, LOW);
   }
   logSetup();
-  delay(getStartupDelay());
+  delayMicroseconds(getStartupDelay());
   setState(SLAVE_STATE_UNKNOWN);
   iicSetup();
 }
 
 void loop() {
-  iicWorker();
+  if (slaveState == SLAVE_STATE_ERROR || slaveState == SLAVE_STATE_UNKNOWN) {
+    logMessage("Resetting...");
+    iicReset();
+    logMessage("Reset OK.");
+  }
+  if (slaveState == SLAVE_STATE_FREE) iicWorker();
   delay(5);
+
+// For tessting only.
+//  if(Serial.available()){
+//    int c = Serial.read();
+//    setState(c-48);
+//  }
 }

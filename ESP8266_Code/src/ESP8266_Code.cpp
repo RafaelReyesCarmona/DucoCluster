@@ -62,8 +62,8 @@ const bool USE_HIGHER_DIFF = true;
    that will be used by the program for counters and measurements. */
 const char * DEVICE = "ESP8266";
 const char * POOLPICKER_URL[] = {"https://server.duinocoin.com/getPool"};
-const char * MINER_BANNER = "Official ESP8266 Miner";
-const char * MINER_VER = "3.0";
+const char * MINER_BANNER = "Recaf ESP8266 Miner";
+const char * MINER_VER = "1.0";
 unsigned int share_count = 0;
 unsigned int port = 0;
 unsigned int difficulty = 0;
