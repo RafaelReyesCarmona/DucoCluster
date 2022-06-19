@@ -166,6 +166,23 @@ int clientPoolClientsOnline() {
 }
 
 /**
+ * Returns the number of online clients active.
+ * 
+ * @return int The number of online clients active.
+ */
+int clientPoolClientsOnlineActive() {
+  logMessage("ClientPool", "clientPoolClientsOnlineACtive", "MethodName", "");
+  int counter = 0;
+  for (byte id=0 ; id<SLAVE_ID_MAX ; id++) {
+    if (poolClientInstance[id].status() != CLOSED) {
+      counter ++;
+    }
+  }
+  logMessage("ClientPool", "clientPoolClientsOnlineACtive", "MethodDetail", "Return " + String(counter));
+  return counter;
+}
+
+/**
  * Returns the connection status of the client with the given ID
  * 
  * @param int id The id of the client

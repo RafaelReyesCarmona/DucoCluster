@@ -99,9 +99,14 @@ String          urlRequestUserBalance                               = "https://s
 String          serverPoolHost                                      = "";                                         // The host of the pool server
 String          serverPoolPort                                      = "";                                         // The port to connect to
 String          serverPoolName                                      = "";                                         // The name of the pool server
-//String          serverPoolHost                                      = "162.55.103.174";                         // The host of the pool server
-//String          serverPoolPort                                      = "6000";                                   // The port to connect to
-//String          serverPoolName                                      = "diskos-pool-1";                          // The name of the pool server
+
+/* For testing
+ * String          serverPoolHost                                      = "162.55.103.174";                         // The host of the pool server
+ * String          serverPoolPort                                      = "6000";                                   // The port to connect to
+ * String          serverPoolName                                      = "diskos-pool-1";                          // The name of the pool server
+*/
+
+// Unsupported for future implementations
 //bool            loadConfigFromSdCard                                = false;                                      // With true loads config from SD card and overwrites this config here
 
 // Communication HTTPS
@@ -182,3 +187,23 @@ unsigned long   balanceFirstTimestamp                               = 0;        
 float           balanceFirstValue                                   = 0.0;                                          // The first received balance
 unsigned long   balanceLastTimestamp                                = 0;                                          // Timestamp when the last balance has been received
 float           balanceLastValue                                    = 0.0;                                          // The last received balance
+
+// Temperature NTC
+// Declaration for NTC thermistor beta. 
+//Thermistor thermistor(/* PIN */       A0,
+//                      /* RESISTOR */  21900L,
+//                      /* NTC 25ºC */  9950L,
+//                      /* BETA */      4190.0,
+//                      /* Vref */      3.30);
+
+//Thermistor thermistor(/* PIN */      A0,
+//                       /* RESISTOR */  22170L,
+//                       /* NTC_T1 */    355000L,
+//                       /* T1 (ºC) */   0.0,  // 273,15 ºK
+//                       /* NTC_T2 */    157500L,
+//                       /* T2 (ºC) */   14.0, // 287,15 ºK
+//                       /* NTC_T3 */    79300L,
+//                       /* T3 (ºC) */   28.0, // 301,15 ºK
+//                       /* NTC_T4 */    58300L,
+//                       /* T4 (ºC) */   35.0, // 308,15 ºK
+//                       /* Vref */      3.30);

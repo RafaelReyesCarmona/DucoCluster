@@ -66,6 +66,7 @@ rafael.reyes.carmona@gmail.com
 #include <SSD1306Wire.h>
 #include <WiFiUdp.h>
 #include <Wire.h>
+//#include <ThermistorNTC.h>
 
 
 /***********************************************************************************************************************
@@ -88,6 +89,7 @@ void            clientPoolConnectClients();
 void            clientPoolRotateStates();
 void            clientPoolLogStates();
 int             clientPoolClientsOnline();
+int             clientPoolClientsOnlineActive();
 bool            clientPoolClientIsConnected(int id);
 bool            clientPoolConnectClient(int id);
 bool            clientPoolRequestNextJobForClient(int id);
@@ -150,7 +152,8 @@ void            wifiSetup(String ssid, String password);
 bool            wifiConnected();
 String          wifiGetIp();
 
-
+// Temperarute with thermistor
+//float           tempGet(Thermistor_connection ConType);
 
 /***********************************************************************************************************************
  * Code Master
@@ -166,6 +169,7 @@ String          wifiGetIp();
 #include "ESP8266_ServerHttp.hpp"
 #include "ESP8266_Slaves.hpp"
 #include "ESP8266_Wifi.hpp"
+//#include "ESP8266_Temp.hpp"
 
 
 /**
@@ -269,6 +273,14 @@ void loop() {
   } else {
     workingSeconds = timestampNow - timestampFirst + (millis()/1000) - (timestampUpdateLast/1000);
     logMessage("Master", "setStateMaster", "MethodDetail", "workingSeconds = " + String(timestampNow) + " - " + String(timestampFirst) + " + " + String((millis()/1000)) + " - " + String((timestampUpdateLast/1000)) + " = " + String(workingSeconds));
+  }
+  if (clientPoolClientsOnlineActive() < nodes_online) {
+    byte count = 0;
+    for (int id=SLAVE_ID_MIN ; id<SLAVE_ID_MAX ; id++) {
+      if (clientPoolConnectClient(id)) count++;
+    }
+    nodes_online = count;
+    displayScreenHome();
   }
   delay(50);
 }

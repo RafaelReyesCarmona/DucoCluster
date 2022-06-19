@@ -5,25 +5,30 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="The software for the DuinoCluster">
 		<meta name="author" content="Frank Niggemann">
-		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-		<link rel="manifest" href="site.webmanifest">
-		<title>DuinoCluster's Info Panel</title>
+		<meta name="author" content="Rafael Reyes(2022)">		
+		<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+		<link rel="manifest" href="./site.webmanifest">
+		<title>DucoCluster's Info Panel</title>
 		<style>
 			body { margin:0; padding:0; font-family:sans-serif; font-size:1rem; font-weight:400; line-height:1.15; color:#212529; text-align:left; background-color:#ffedd6; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; -ms-overflow-style:scrollbar; -webkit-tap-highlight-color:transparent; min-width:480px;align-content:center; }
 			.header { margin:0; padding:0; text-align:center; background-color:#121212; }
-			h1 { margin:0; padding:5px; text-align:center; color:#ffb412; background-color:#121212; font-size:30px; }
+			h1 { margin:0; padding:0 0 0 85px; text-align:center; color:#ffb412; background-color:#121212; font-size:30px; }
 			.content { align-content:center; }
 			.container { width:100%; align-content:center; margin-left:auto; margin-right:auto; }
 			.col1 { margin-top:10px; margin-bottom:10px; float:left; text-align:center; width:100%; }
 			.col2 { margin-top:10px; margin-bottom:10px; float:left; text-align:center; width:100%; }
 			.col4 { margin-top:10px; margin-bottom:10px; float:left; text-align:center; width:50%; }
 			.row { margin:0; }
+			.footer { font-family:sans-serif; font-size:x-small; text-align:left; }
 			.divider { margin:0; margin-top:10px; margin-bottom:10px; padding:1px; background-color:#121212; width:100%; float:left; }
 			.forceleft { text-align:left!important; }
-			a { color:#121212; text-decoration:none; }
-			a:hover { color:#801212; text-decoration:underline; }
+			a { outline: none; text-decoration: none; padding: 2px 1px 0;}
+			a:link { color:#121212;}
+			a:visited { color: purple;}
+			a:focus, a:hover { border-bottom: 1px solid;}
+			a:active { color: red;}
 			@media (min-width: 576px) {
 				.container { max-width: 540px; }
 				.col1 { width:100%; }
@@ -122,7 +127,12 @@
 	</head>
 	<body>
 		<dif class="header">
-			<h1 class="jumbotron-heading">STATUS <span id="rig_name">%RIGNAME%</span> (<span id="rig_ip">%RIGIP%</span>)</h1>
+			<span class="sd-abs-pos" style="position: absolute; top: 5px; left: 5px; width: 80px">
+				<img src="data:image/png;base64,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"/>
+			</span>
+			<h1 class="jumbotron-heading">
+				<span id="rig_name">%RIGNAME%</span> (<span id="rig_ip">%RIGIP%</span>)
+			</h1>
 		</dif>
 		<div class="content">
 			<div class="container">
@@ -193,24 +203,45 @@
 					</div>
 				</div>
 				<div class="divider"></div>
-				<div class="row" id="core_details">%COREDETAILS%</div>
-				<div class="divider"></div>
 				<div class="row">
 					<div class="col1 forceleft">
 						<h4 class="text-white">About</h4>
-						<p class="text-white">This software was written and is maintained by Frank Niggemann for Microcontroller-Expert. The software is free and can be used by anyone under the MIT license. <br />The Duino Coin is a fun coin and no liability is assumed! Microcontroller-Expert provides this software free of charge. There is no guarantee that this software will work correctly on all hardware. Therefore, no liability is accepted for any damage!</p>
+						<p class="text-white">This version is modified by Rafael Reyes. Originally, this software was written and was maintained by Frank Niggemann for Microcontroller-Expert. <br /><br />
+							The original software is free and can be used by anyone under the MIT license. Modified code is on GNU v.3 license.<br /><br />
+							There is no guarantee that this software will work correctly on all hardware. Therefore, no liability is accepted for any damage!</p>
 						<h4 class="text-white">Links</h4>
 						<ul class="list-unstyled">
-							<li><a href="https://duinocoin.com/" class="text-white" target="_blank">Duino Coin Home</a></li>
-							<li><a href="https://wallet.duinocoin.com/" class="text-white" target="_blank">Duino Coin Wallet</a></li>
-							<li><a href="https://duco.sytes.net/" class="text-white" target="_blank">Duino Coin Dashboard</a></li>
-							<li><a href="https://www.microcontroller-expert.com/" class="text-white" target="_blank">Microcontroller-Expert</a></li>
-							<li><a href="https://github.com/MicrocontrollerExpert/duino-coin-rig" class="text-white" target="_blank">GitHub repository</a></li>
+							<li><a href="https://duinocoin.com/" class="text-white" target="_blank">Duino Coin Home <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+								width="16" height="16"
+								viewBox="0 0 30 30"
+								style=" fill:#undefined;"><path d="M 25.980469 2.9902344 A 1.0001 1.0001 0 0 0 25.869141 3 L 20 3 A 1.0001 1.0001 0 1 0 20 5 L 23.585938 5 L 13.292969 15.292969 A 1.0001 1.0001 0 1 0 14.707031 16.707031 L 25 6.4140625 L 25 10 A 1.0001 1.0001 0 1 0 27 10 L 27 4.1269531 A 1.0001 1.0001 0 0 0 25.980469 2.9902344 z M 6 7 C 4.9069372 7 4 7.9069372 4 9 L 4 24 C 4 25.093063 4.9069372 26 6 26 L 21 26 C 22.093063 26 23 25.093063 23 24 L 23 14 L 23 11.421875 L 21 13.421875 L 21 16 L 21 24 L 6 24 L 6 9 L 14 9 L 16 9 L 16.578125 9 L 18.578125 7 L 16 7 L 14 7 L 6 7 z"></path></svg></a></li>
+							<li><a href="https://wallet.duinocoin.com/" class="text-white" target="_blank">Duino Coin Wallet <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+								width="16" height="16"
+								viewBox="0 0 30 30"
+								style=" fill:#undefined;"><path d="M 25.980469 2.9902344 A 1.0001 1.0001 0 0 0 25.869141 3 L 20 3 A 1.0001 1.0001 0 1 0 20 5 L 23.585938 5 L 13.292969 15.292969 A 1.0001 1.0001 0 1 0 14.707031 16.707031 L 25 6.4140625 L 25 10 A 1.0001 1.0001 0 1 0 27 10 L 27 4.1269531 A 1.0001 1.0001 0 0 0 25.980469 2.9902344 z M 6 7 C 4.9069372 7 4 7.9069372 4 9 L 4 24 C 4 25.093063 4.9069372 26 6 26 L 21 26 C 22.093063 26 23 25.093063 23 24 L 23 14 L 23 11.421875 L 21 13.421875 L 21 16 L 21 24 L 6 24 L 6 9 L 14 9 L 16 9 L 16.578125 9 L 18.578125 7 L 16 7 L 14 7 L 6 7 z"></path></svg></a></li>
+							<li><a href="https://duco.sytes.net/" class="text-white" target="_blank">Duino Coin Dashboard <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+								width="16" height="16"
+								viewBox="0 0 30 30"
+								style=" fill:#undefined;"><path d="M 25.980469 2.9902344 A 1.0001 1.0001 0 0 0 25.869141 3 L 20 3 A 1.0001 1.0001 0 1 0 20 5 L 23.585938 5 L 13.292969 15.292969 A 1.0001 1.0001 0 1 0 14.707031 16.707031 L 25 6.4140625 L 25 10 A 1.0001 1.0001 0 1 0 27 10 L 27 4.1269531 A 1.0001 1.0001 0 0 0 25.980469 2.9902344 z M 6 7 C 4.9069372 7 4 7.9069372 4 9 L 4 24 C 4 25.093063 4.9069372 26 6 26 L 21 26 C 22.093063 26 23 25.093063 23 24 L 23 14 L 23 11.421875 L 21 13.421875 L 21 16 L 21 24 L 6 24 L 6 9 L 14 9 L 16 9 L 16.578125 9 L 18.578125 7 L 16 7 L 14 7 L 6 7 z"></path></svg></a></li>
+							<li><a href="https://siunus.github.io/duco-monitor/#%USERNAME%" class="text-white" target="_blank">Duco Monitor <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+								width="16" height="16"
+								viewBox="0 0 30 30"
+								style=" fill:#undefined;"><path d="M 25.980469 2.9902344 A 1.0001 1.0001 0 0 0 25.869141 3 L 20 3 A 1.0001 1.0001 0 1 0 20 5 L 23.585938 5 L 13.292969 15.292969 A 1.0001 1.0001 0 1 0 14.707031 16.707031 L 25 6.4140625 L 25 10 A 1.0001 1.0001 0 1 0 27 10 L 27 4.1269531 A 1.0001 1.0001 0 0 0 25.980469 2.9902344 z M 6 7 C 4.9069372 7 4 7.9069372 4 9 L 4 24 C 4 25.093063 4.9069372 26 6 26 L 21 26 C 22.093063 26 23 25.093063 23 24 L 23 14 L 23 11.421875 L 21 13.421875 L 21 16 L 21 24 L 6 24 L 6 9 L 14 9 L 16 9 L 16.578125 9 L 18.578125 7 L 16 7 L 14 7 L 6 7 z"></path></svg></a></li>
+							<li><a href="https://github.com/RafaelReyesCarmona/DucoCluster" class="text-white" target="_blank">GitHub repository <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+								width="16" height="16"
+								viewBox="0 0 30 30"
+								style=" fill:#undefined;"><path d="M 25.980469 2.9902344 A 1.0001 1.0001 0 0 0 25.869141 3 L 20 3 A 1.0001 1.0001 0 1 0 20 5 L 23.585938 5 L 13.292969 15.292969 A 1.0001 1.0001 0 1 0 14.707031 16.707031 L 25 6.4140625 L 25 10 A 1.0001 1.0001 0 1 0 27 10 L 27 4.1269531 A 1.0001 1.0001 0 0 0 25.980469 2.9902344 z M 6 7 C 4.9069372 7 4 7.9069372 4 9 L 4 24 C 4 25.093063 4.9069372 26 6 26 L 21 26 C 22.093063 26 23 25.093063 23 24 L 23 14 L 23 11.421875 L 21 13.421875 L 21 16 L 21 24 L 6 24 L 6 9 L 14 9 L 16 9 L 16.578125 9 L 18.578125 7 L 16 7 L 14 7 L 6 7 z"></path></svg></a></li>
 						</ul>
 					</div>
-				</div>  
-			</div>  
-		</div>  
-		<script>setInterval(getApiStatus, 10000);</script>
+				</div>
+				<div class="divider"></div>
+				<div class="footer">
+					<ul class="list-unstyled">
+						<li><a href="https://icons8.com/icon/6TV5XcFbl_wP/coins">Coins icon by Icons8</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script>setInterval(getApiStatus, 2500);</script>
 	</body>
 </html>

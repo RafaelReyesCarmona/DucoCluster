@@ -38,8 +38,9 @@ rafael.reyes.carmona@gmail.com
 /**
  * Initialize function
  */
-void tempSetup() {
-}
+//float tempGet(Thermistor_connection ConType) {
+//  return thermistor.fastTempCelsius(ConType);
+//}
 
 
 

@@ -54,13 +54,13 @@ void serverHttpApiStatus() {
     apiStatus += "\"number_of_jobs\":\""+String(jobs_sum)+"\",";
     apiStatus += "\"number_of_blocks\":\""+String(jobs_blocks)+"\",";
     apiStatus += "\"jobs_good\":\""+String(jobs_good)+"\",";
-    apiStatus += "\"jobs_bad\":\""+String(jobs_bad)+"\",";
-    apiStatus += "\"core_details\":[";
+    apiStatus += "\"jobs_bad\":\""+String(jobs_bad)+"\"}";
+    //apiStatus += "\"core_details\":[";
 
     // ToDo ...
-        
-    apiStatus += "]";
-    apiStatus += "}";
+
+    //apiStatus += "]";
+    //apiStatus += "}";
   }
   server.send(200, "text/plain", apiStatus);
 
@@ -105,8 +105,8 @@ void serverHttpSetup() {
   server.on("/api/log", HTTP_GET, serverHttpApiLog);
 
   //server.on("/", HTTP_GET, server.send(200, LittleFS, "/index.html"));
-
-  server.serveStatic("/", LittleFS, "/index.html"); 
+  
+  server.serveStatic("/", LittleFS, "/"); 
   
   server.begin();
 }
