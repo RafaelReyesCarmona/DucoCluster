@@ -66,23 +66,6 @@ String getPseudoUniqueIdString() {
 }
 
 unsigned long getStartupDelay() {
-  /*
-  byte value[8];
-  unsigned long milliseconds = 0;
-  for (int i=0 ; i<8 ; i++) {
-    value[i] = boot_signature_byte_get(i);
-  }
-  for (int i=8 ; i<128 ; i++) {
-    byte value_before = value[(i%8)];
-    value[(i%8)] = (value_before+boot_signature_byte_get(i))%256;
-  }
-  for (int i=0 ; i<8 ; i++) {
-    milliseconds += value[i]*(8^i);
-  }
-  milliseconds = (milliseconds%1000)*10;
-  logMessage("Startupdelay: "+String(milliseconds)+"ms");
-  return milliseconds;
-  */
   unsigned long time = 0;
   time = (unsigned long) getTrueRotateRandomByte() * 1000 + (unsigned long) getTrueRotateRandomByte();
   logMessage("Startupdelay: "+String(time)+"µs");

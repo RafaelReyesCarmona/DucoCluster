@@ -67,5 +67,6 @@ int StreamString::peek()
 
 void StreamString::flush()
 {
+    while(length()) remove(0,1);
 }
 

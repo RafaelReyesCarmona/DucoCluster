@@ -1,149 +1,84 @@
-# DuinoCluster
-This is my personal work about Duino Coin. DuinoCluster is divided in two projects to implement the way I have the cluster minig.
+# DucoCluster
+This is my personal work about Duino Coin. DucoCluster is divided in two projects to implement the way I have the cluster minig.
 
 The code is based in the official Duino-Coin (https://duinocoin.com/) of ESP8266s boards
 (NodeMCU, Wemos, etc.) (https://github.com/revoxhere/duino-coin/tree/master/ESP8266_Code) and duino-coin-rig project on GitHub (https://github.com/MicrocontrollerExpert/duino-coin-rig)
-### Table of contents
+
+This is DucoClusterAVR 
+## Table of contents
 - [Hardware](#hardware)
   * [Currently supported hardware](#currently-supported-hardware)
+    + [ESP8266](#esp8266)
+    + [Arduino Pro Mini clone (ATmega328p)](#arduino-pro-mini-clone-atmega328p)
+    + [Green LGT8F328P](#green-lgt8f328p)
 - [Component wiring](#component-wiring)
-  * [ESP8266 to Arduino Nano](#esp8266-to-arduino-nano)
-  * [ESP8266 to ATTINY85](#esp8266-to-attiny85)
-  * [ESP8266 to SSD1306 display](#esp8266-to-ssd1306-display)
-  * [ESP8266 to SD card](#esp8266-to-sd-card)
-    + [3.3V SD card adapter](#33v-sd-card-adapter)
-    + [5V SD card adapter](#5v-sd-card-adapter)
+  * [ESP8266 to Avr,s](#esp8266-to-avrs)
+- [Required Libraries](#required-libraries)
+- [Configuration](#configuration)
 
-### Screenshot Webfrontend
-<img src="Images/Screenshot-Webfrontend.jpe
-g" alt="DuinoCluster Screenshot Webfrontend" width="100%">
+## Screenshot Webfrontend
+<img src="Images/Screenshot-Webfrontend.jpeg" alt="DuinoCluster Screenshot Webfrontend" width="100%">
 
 
 ## Hardware
 ### Currently supported hardware
-- ESP8266
-- Arduino Pro Mini / LGT8F328P
+- Wemos@ D1 Esp-Wroom-02 Motherboard ESP8266 Mini-WIFI NodeMCU + 18650 Battery + 0,96 ssd1306 OLED
+- Arduino Pro Mini clone (ATmega328p) / Green LGT8F328P
 
+### ESP8266
+The design concept is derived from the open source project NodeMCU. The development board integrates 18650 charge and discharge system, with its own charge and discharge protection, and integrates an OLED and five-way button for easy development.
 
-## Component wiring
+The display is connected directly to the ESP8266 because no logic level converter is required. SDA and SCL are connected to D1 and D2 respectively. ```Note that the configuration of SDA and SCL are inverted compared to the usually known configuration.```
 
-### ESP8266 to Arduino Nano
-Tested with ESP8266 D1 Mini, but should theoretically work with ESP8266 NodeMCU as well.
-
-Because the ESP8266 works with a 3.3V signal and the Arduino Nanos need a 5V signal, you have to connect a logic level converter in between. This converts the 3.3V signals from the ESP8266 to 5V for the Arduino Nanos and the 5V signals from the Arduino Nanos to 3.3V for the ESP8266. Without this conversion, the components could not communicate with each other.
-
-| Type | ESP8266 D1 Mini |  ESP8266 NodeMCU | - | Logic Level Converter | - | Arduino Nano |
-|:-----:| :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
-| GND | GND | GND | - | GND - GND | - | GND |
-| Voltage    | 3.3V | 3.3V | - | 3V - 5V | - | 5V |
-| Voltage    | 5V | VIN | - | - | - | 5V |
-| SCL | D1 | D1 | - | LV1 - HV1 | - | A5 |
-| SDA | D2 | D2 | - | LV2 - HV2 | - | A4 |
-
-<img src="Images/Duino-Coin-Rig-ESP8266-Arduino-Nano.png" alt="Duino Coin Rig ESP8266 Arduino Nano" width="100%">
-
-
-### ESP8266 to ATTINY85
-Tested with ESP8266 D1 Mini, but should theoretically work with ESP8266 NodeMCU as well.
-
-Because the ESP8266 works with a 3.3V signal and the ATTINYs need a 5V signal, you have to connect a logic level converter in between. This converts the 3.3V signals from the ESP8266 to 5V for the ATTINYs and the 5V signals from the ATTINYs to 3.3V for the ESP8266. Without this conversion, the components could not communicate with each other.
-
-| Type | ESP8266 D1 Mini |  ESP8266 NodeMCU | - | Logic Level Converter | - | ATTINY85 |
-|:-----:| :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
-| GND | GND | GND | - | GND - GND | - | PIN4 |
-| Voltage    | 3.3V | 3.3V | - | 3V - 5V | - | PIN8 |
-| Voltage    | 5V | VIN | - | - | - | PIN8 |
-| SCL | D1 | D1 | - | LV1 - HV1 | - | PIN7 |
-| SDA | D2 | D2 | - | LV2 - HV2 | - | PIN5 |
-| G-LED | - | - | - | - | - | PIN3 |
-| R-LED | - | - | - | - | - | PIN6 |
-
-<img src="Images/Duino-Coin-Rig-ESP8266-ATTINY85.png" alt="Duino Coin Rig ESP8266 ATTINY85" width="100%">
-
-
-### ESP8266 to SSD1306 display
-Tested with ESP8266 D1 Mini, but should theoretically work with ESP8266 NodeMCU as well.
-
-The display is connected directly to the ESP8266 because no logic level converter is required.
-
-| Type | ESP8266 D1 Mini |  ESP8266 NodeMCU | SSD1306 |
+| Type | ESP8266 Wemos@ D1 |  ESP8266 NodeMCU | SSD1306 |
 |:-----:| :-----: | :-----: | :-----: |
 | GND | GND | GND | GND |
 | Voltage    | 3.3V | 3.3V | VCC |
-| SCL | D1 | D1 | SCL |
-| SDA | D2 | D2 | SDA |
+| SCL | D2 | D1 | SCL |
+| SDA | D1 | D2 | SDA |
 
+<img src="Images/WemosD1_ESP8266_Oled.jpg" alt="Wemos@ D1 ESP8266 Oled" width="100%">
 
-### ESP8266 to SD card
-Tested with ESP8266 D1 Mini, but should theoretically work with ESP8266 NodeMCU as well.
+### Arduino Pro Mini clone (ATmega328p)
 
-Depending on the SD card adapter, it must be connected to either the 3.3V or the 5V connection of the ESP8266. We present it in two different tables, although all other connections are identical.
+### Green LGT8F328P
 
+## Component wiring
 
-#### 3.3V SD card adapter
-| Type | ESP8266 D1 Mini |  ESP8266 NodeMCU | 3.3V SD card adapter |
-|:-----:| :-----: | :-----: | :-----: |
-| GND | GND | GND | GND | GND |
-| Voltage    | 3.3V | 3.3V | VCC |
-| SCK | D5 | D5 | SCK |
-| MISO | D6 | D6 | MISO |
-| MOSI | D7 | D7 | MOSI |
-| CS | D8 | D8 | CS |
+### ESP8266 to Avr,s
+Tested with Wemos@ D1 ESP8266, but should theoretically work with ESP8266 NodeMCU or similar as well.
 
+Because the ESP8266 works with a 3.3V signal and the Arduino Pro Mini andLGT8F328P need a 5V signal, you have to connect a logic level converter in between. This converts the 3.3V signals from the ESP8266 to 5V for the Avr,s and the 5V signals from the Avr,s to 3.3V for the ESP8266. Without this conversion, the components could not communicate with each other.
 
-#### 5V SD card adapter
-| Type | ESP8266 D1 Mini |  ESP8266 NodeMCU | 5V SD card adapter |
-|:-----:| :-----: | :-----: | :-----: |
-| GND | GND | GND | GND | GND |
-| Voltage    | 5V | VIN | VCC |
-| SCK | D5 | D5 | SCK |
-| MISO | D6 | D6 | MISO |
-| MOSI | D7 | D7 | MOSI |
-| CS | D8 | D8 | CS |
+| Type | ESP8266 Wemos@ D1 | - | Logic Level Converter | - | Arduino Nano |
+|:-----:| :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
+| GND | GND | - | GND - GND | - | GND |
+| Voltage    | 3.3V | - | 3V - 5V | - | 5V |
+| Voltage    | 5V | - | - | - | 5V |
+| SCL | D2 | - | LV1 - HV1 | - | A5 |
+| SDA | D1 | - | LV2 - HV2 | - | A4 |
 
+<img src="Images/Duino-Coin-Rig-ESP8266-Arduino-Nano.png" alt="Duino Coin Rig ESP8266 Arduino Nano" width="100%">
 
 ## Required Libraries
 You need these libraries to be able to compile the code.
 
 - Arduino
-- ArduinoJson
-- ESP8266HTTPClient
-- ESP8266mDNS
-- ESP8266WiFi
-- ESPAsyncTCP
-- ESPAsyncWebServer
-- NTPClient
-- SdFat
-- SPIFFSEditor
-- SSD1306Wire
-- WiFiClientSecureBearSSL
-- WiFiUdp
-- Wire
+- ArduinoJson @ 6.19.4
+- NTPClient @ 3.2.1
+- ESP8266 and ESP32 OLED driver for SSD1306 displays @ 4.3.0
+- ESP8266HTTPClient @ 1.2
+- ESP8266WiFi @ 1.0
+- ESP8266mDNS @ 1.2
+- ESP8266WebServer @ 1.0
+- LittleFS @ 0.1.0
+- Wire @ 1.0
 
 ## Configuration
-### Configuration without SD card
-Without the SD card adapter and a SD card you have to configure this software in the code. To do this, you need to adjust the following variables in the ESP8266_Master file.
+You have to configure the variables above in the code. To do this, you need to adjust the following  values in the ```ESP8266_PersonalConfig.hpp``` file.
 
 | Variable | Description |
 |:-----:| :-----: |
 | wifiSsid | The SSID (name) of your WiFi network |
 | wifiPassword | The password of your WiFi network |
 | nameUser | The name you use for your wallet |
-| nameRig | The name of your rig |
-
-### Configuration with SD card
-If you want to load your configuration from an SD card, you need to create a text file called "config.rig" on the SD card and fill in this information:
-```
-wifi_ssid={The SSID (name) of your WiFi network}
-wifi_password={The password of your WiFi network}
-name_user={The name you use for your wallet}
-name_rig={The name of your rig}
-```
-
-It could then look like this:
-```
-wifi_ssid=MyHomeWiFi
-wifi_password=secret123
-name_user=Duinouser
-name_rig=Duinorig
-```

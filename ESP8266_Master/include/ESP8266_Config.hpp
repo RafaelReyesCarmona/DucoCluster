@@ -89,10 +89,7 @@ rafael.reyes.carmona@gmail.com
 String          softwareName                                        = "DucoCluster";                              // The name of this software          
 String          softwareVersion                                     = "1.0";                                      // The version of this software
 String          minerName                                           = "AVR I2C 3.1";                              // The name of the miner
-String          wifiSsid                                            = "xxxxxxxxxxx";                                 // Your WiFi SSID
-String          wifiPassword                                        = "xxxxxxxxxxxx";                           // Your WiFi password
 String          wifiIp                                              = "";                                         // Your WiFi IP
-String          nameUser                                            = "xxxxxxxxxxx";                                    // Your Duino Coin username
 String          nameRig                                             = "DucoClusterAVR";                           // Your name for this rig
 String          urlRequestPool                                      = "https://server.duinocoin.com/getPool";     // The url to request the pool server
 String          urlRequestUserBalance                               = "https://server.duinocoin.com/balances/";   // The url to request the balance
@@ -190,13 +187,13 @@ float           balanceLastValue                                    = 0.0;      
 
 // Temperature NTC
 // Declaration for NTC thermistor beta. 
-//Thermistor thermistor(/* PIN */       A0,
-//                      /* RESISTOR */  21900L,
-//                      /* NTC 25ºC */  9950L,
-//                      /* BETA */      4190.0,
-//                      /* Vref */      3.30);
+ThermistorNTC::Thermistor thermistor(/* PIN */       A0,
+                                /* RESISTOR */  21900L,
+                                /* NTC 25ºC */  9950L,
+                                /* BETA */      4190.0,
+                                /* Vref */      3.30);
 
-//Thermistor thermistor(/* PIN */      A0,
+//ThermistorNTC::Thermistor thermistor(/* PIN */      A0,
 //                       /* RESISTOR */  22170L,
 //                       /* NTC_T1 */    355000L,
 //                       /* T1 (ºC) */   0.0,  // 273,15 ºK

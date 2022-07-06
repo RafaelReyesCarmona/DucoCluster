@@ -25,22 +25,16 @@ rafael.reyes.carmona@gmail.com
 
 /*
  * Project: DucoCluster
- * File:    ESP8266_Temp.hpp
+ * File:    ESP8266_PersonalConfig.hpp
  * Version: 0.1
- * Purpose: Temperature massure with thermistor
+ * Purpose: Global variables. Change for your own situation.
  * Author:  Francisco Rafael Reyes Carmona
  */
 
 /***********************************************************************************************************************
- * Temperarute with thermistor Code
+ * Definitions
  **********************************************************************************************************************/
 
-#include <ThermistorNTC.h>
-
-/**
- * Get temperature function
- */
-float tempGet(ThermistorNTC::Thermistor_connection ConType) {
-  return thermistor.fastTempCelsius(ConType);
-}
-
+String wifiSsid      = "XXXXXXXXXXXX";          // Your WiFi SSID
+String wifiPassword  = "XXXXXXXXXXXXXXXXXX";    // Your WiFi password
+String nameUser      = "XXXXXXXXXXXXX";         // Your Duino Coin username

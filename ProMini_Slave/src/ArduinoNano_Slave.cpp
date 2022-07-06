@@ -41,9 +41,10 @@ rafael.reyes.carmona@gmail.com
  * 
  * Needed libraries: ArduinoUniqueID
  *                   DuinoCoin
- *                   StreamString
+ *                   DuinoCoinSpeed
+ *                   StreamJoin
  *                   Wire
- *                   Watchdog
+ *                   TrueRandomNumbers
  *                   SoftwareSerial
  */
 
@@ -221,6 +222,8 @@ void setup() {
   iicSetup();
 }
 
+uint8_t cycles = 0;
+
 void loop() {
   if (slaveState == SLAVE_STATE_ERROR || slaveState == SLAVE_STATE_UNKNOWN) {
     logMessage("Resetting...");
@@ -229,6 +232,16 @@ void loop() {
   }
   if (slaveState == SLAVE_STATE_FREE) iicWorker();
   delay(5);
+  cycles++;
+  if(cycles > 255) {
+    setState(SLAVE_STATE_FREE);
+    //bufferReceive.flush();
+    while (bufferReceive.available()) bufferReceive.read();
+    //bufferRequest.flush();
+    while (bufferRequest.available()) bufferRequest.read();
+    cycles = 0;
+  }
+  
 
 // For tessting only.
 //  if(Serial.available()){

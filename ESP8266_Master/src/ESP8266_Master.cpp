@@ -36,6 +36,9 @@ rafael.reyes.carmona@gmail.com
  * |-- NTPClient @ 3.2.1
  * |-- ESP8266 and ESP32 OLED driver for SSD1306 displays @ 4.3.0
  * |   |-- Wire @ 1.0
+ * |-- ThermistorNTC @ 0.3.2
+ * |   |-- EMA @ 0.1.1
+ * |   |-- ADC @ 0.1.2
  * |-- ESP8266HTTPClient @ 1.2
  * |   |-- ESP8266WiFi @ 1.0
  * |-- ESP8266mDNS @ 1.2
@@ -66,7 +69,7 @@ rafael.reyes.carmona@gmail.com
 #include <SSD1306Wire.h>
 #include <WiFiUdp.h>
 #include <Wire.h>
-//#include <ThermistorNTC.h>
+#include <ThermistorNTC.h>
 
 
 /***********************************************************************************************************************
@@ -153,11 +156,12 @@ bool            wifiConnected();
 String          wifiGetIp();
 
 // Temperarute with thermistor
-//float           tempGet(Thermistor_connection ConType);
+float           tempGet(ThermistorNTC::Thermistor_connection ConType);
 
 /***********************************************************************************************************************
  * Code Master
  **********************************************************************************************************************/
+#include "ESP8266_PersonalConfig.hpp"
 #include "ESP8266_Config.hpp"
 #include "ESP8266_Log.hpp"
 #include "ESP8266_ClientHttps.hpp"
@@ -169,7 +173,7 @@ String          wifiGetIp();
 #include "ESP8266_ServerHttp.hpp"
 #include "ESP8266_Slaves.hpp"
 #include "ESP8266_Wifi.hpp"
-//#include "ESP8266_Temp.hpp"
+#include "ESP8266_Temp.hpp"
 
 
 /**
@@ -274,13 +278,6 @@ void loop() {
     workingSeconds = timestampNow - timestampFirst + (millis()/1000) - (timestampUpdateLast/1000);
     logMessage("Master", "setStateMaster", "MethodDetail", "workingSeconds = " + String(timestampNow) + " - " + String(timestampFirst) + " + " + String((millis()/1000)) + " - " + String((timestampUpdateLast/1000)) + " = " + String(workingSeconds));
   }
-  if (clientPoolClientsOnlineActive() < nodes_online) {
-    byte count = 0;
-    for (int id=SLAVE_ID_MIN ; id<SLAVE_ID_MAX ; id++) {
-      if (clientPoolConnectClient(id)) count++;
-    }
-    nodes_online = count;
-    displayScreenHome();
-  }
+  nodes_online = clientPoolClientsOnlineActive();
   delay(50);
 }

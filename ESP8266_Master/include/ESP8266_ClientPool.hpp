@@ -114,7 +114,7 @@ void clientPoolRotateStates() {
 void clientPoolValidateState(int id) {
   logMessage("ClientPool", "clientPoolValidateState", "MethodName", "");
   if (poolClientState[id] == CLIENT_STATE_UNKNOWN) {
-    
+    clientPoolConnectClient(id);
   } else if (poolClientState[id] == CLIENT_STATE_OFFLINE) {
     
   } else if (poolClientState[id] == CLIENT_STATE_CONNECTING) {
